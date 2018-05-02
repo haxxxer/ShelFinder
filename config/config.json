@@ -1,0 +1,14 @@
+{
+  "test": {
+    "PORT": 3001,
+    "MONGODB_URI": "mongodb://localhost:27017/SeniorTest",
+    "JWT_SECRET": "^_F/*[u#MB(>{@M|X}RwD00DED3F6CABDB744B7D19RV.G?7"
+  },
+
+  "development": {
+    "PORT": 3000,
+    "MONGODB_URI": "mongodb://localhost:27017/ShelFinder",
+    "JWT_SECRET": "^_F/*[u#MB(>{@M|XAH3v8aaOv7TSCUhy2HB74B79RV.G?!7"
+
+  }
+}
