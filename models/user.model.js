@@ -28,7 +28,7 @@ UserSchema.methods.comparePassword = function (pass, cb) {
 
 
 UserSchema.pre('save', function (next) {
-  console.log('fired')
+
   var user = this
 
     bcrypt.genSalt(10, (err, salt) => {
@@ -36,7 +36,6 @@ UserSchema.pre('save', function (next) {
       bcrypt.hash(user.password, salt, (err, hash) => {
         if (err) { next(err); }
         user.password = hash;
-        console.log('password', user.password)
         next();
       })
     })

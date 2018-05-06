@@ -1,7 +1,7 @@
 {
   "test": {
     "PORT": 3001,
-    "MONGODB_URI": "mongodb://localhost:27017/SeniorTest",
+    "MONGODB_URI": "mongodb://localhost:27017/ShelFinderTest",
     "JWT_SECRET": "^_F/*[u#MB(>{@M|X}RwD00DED3F6CABDB744B7D19RV.G?7"
   },
 

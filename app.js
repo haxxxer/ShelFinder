@@ -5,6 +5,7 @@ const _          = require('lodash'),
       jwt        = require('jsonwebtoken');
       express    = require('express'),
       passport   = require('passport'),
+      {ObjectID}    = require('mongodb'),
       bodyParser = require('body-parser');
 
 // DATABASE CONFIGURATIONS
@@ -38,7 +39,7 @@ app.post('/register', (req, res) => {
   newUser.save()
     .then((user) => {
       res.status(201).json({success:true, user: _.pick(user, ["_id", 'name', 'email', 'dp'])});
-    })
+    }).catch(err => res.status(400).json({success: false, err}))
 });
 // LOGIN ROUTE << AUTHENTICATE >> 
 app.post('/login', (req, res) => {
@@ -86,14 +87,34 @@ app.post('/login', (req, res) => {
 
 // GET USER INFO
 app.get('/users/:id', (req, res) => {
+  if (!ObjectID.isValid(req.params.id)) {
+    return res.status(404).send({
+        msg: "user not found!",
+        success: false
+    });
+  }
   User.findById(req.params.id).then(
-    (user) => res.json(user)
+    (user) => {
+      if(!user ) return res.status(404).json({success:false, msg: "User was not found!"});
+      res.json(user)
+    }
   )
 })
 // UPDATE USER INFO
 app.patch('/users/:id', (req, res) => {
-
+  if (!ObjectID.isValid(req.params.id)) {
+    return res.status(404).send({
+        msg: "user not found!",
+        success: false
+    });
+  }
   User.findById(req.params.id).then(user => {
+    if(!user) {
+      return res.status(404).send({
+        msg: "user not found!",
+        success: false
+    });
+    }
     Object.keys(req.body).forEach(key => {
       user[key] = req.body[key]
     });
@@ -165,3 +186,4 @@ app.listen(PORT, () => {
 // ALL MQTT, PUB/SUB LOGIC
 require('./mqtt');
 
+module.exports = { app };
