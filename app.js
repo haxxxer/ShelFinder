@@ -177,6 +177,21 @@ app.post('/beacons', (req, res) => {
   )
 })
 
+app.get('/beacons/:id', (req, res) => {
+  if (!ObjectID.isValid(req.params.id)) {
+    return res.status(404).send({
+        msg: "beacon not found!",
+        success: false
+    });
+  }
+  Beacon.findById(req.params.id).then(
+    (beacon) => {
+      if(!beacon ) return res.status(404).json({success:false, msg: "beacon was not found!"});
+      res.json(beacon)
+    }
+  )
+})
+
 
 // LAUNCH SERVER ON PORT
 app.listen(PORT, () => {
