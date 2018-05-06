@@ -86,14 +86,14 @@ app.post('/login', (req, res) => {
 
 
 // GET USER INFO
-app.get('/users/:uuid', (req, res) => {
-  if (!ObjectID.isValid(req.params.uuid)) {
+app.get('/users/:id', (req, res) => {
+  if (!ObjectID.isValid(req.params.id)) {
     return res.status(404).send({
         msg: "user not found!",
         success: false
     });
   }
-  User.find({uiid: req.params.uuid}).then(
+  User.findById(req.params.id).then(
     (user) => {
       if(!user ) return res.status(404).json({success:false, msg: "User was not found!"});
       res.json(user)
@@ -177,15 +177,15 @@ app.post('/beacons', (req, res) => {
   )
 })
 
-app.get('/beacons/:id', (req, res) => {
-  //console.log("beaconid", req.params.id)
-  if (!ObjectID.isValid(req.params.id)) {
-    return res.status(404).send({
-        msg: "beacon not found!",
-        success: false
-    });
-  }
-  Beacon.findById(req.params.id).then(
+app.get('/beacons/:uuid', (req, res) => {
+ 
+  // if (!ObjectID.isValid(req.params.id)) {
+  //   return res.status(404).send({
+  //       msg: "beacon not found!",
+  //       success: false
+  //   });
+  // }
+  Beacon.findOne({uuid: req.params.uuid}).then(
     (beacon) => {
       if(!beacon ) return res.status(404).json({success:false, msg: "beacon was not found!"});
       res.json(beacon)
