@@ -86,14 +86,14 @@ app.post('/login', (req, res) => {
 
 
 // GET USER INFO
-app.get('/users/:id', (req, res) => {
-  if (!ObjectID.isValid(req.params.id)) {
+app.get('/users/:uuid', (req, res) => {
+  if (!ObjectID.isValid(req.params.uuid)) {
     return res.status(404).send({
         msg: "user not found!",
         success: false
     });
   }
-  User.findById(req.params.id).then(
+  User.find({uiid: req.params.uuid}).then(
     (user) => {
       if(!user ) return res.status(404).json({success:false, msg: "User was not found!"});
       res.json(user)
@@ -178,6 +178,7 @@ app.post('/beacons', (req, res) => {
 })
 
 app.get('/beacons/:id', (req, res) => {
+  //console.log("beaconid", req.params.id)
   if (!ObjectID.isValid(req.params.id)) {
     return res.status(404).send({
         msg: "beacon not found!",
