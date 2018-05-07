@@ -11,12 +11,18 @@ client.on('connect', function () {
 
 client.on('message', function (topic, message) {
   // message is Buffer
-  let id = new ObjectID(topic.toString().substr(7, 24));
-  const t = message.toString();
-  Beacon.findOne({topic: t}).then((beacon) => {
+  const t = topic.toString();
+  let id = new ObjectID(t.substr(7, 24));
+  const m = message.toString();
+  const method = t.substr(t.lastIndexOf('/') +1);
+  let query = {topic: m};
+  if(method == "loc") query = {loc: m}
+  console.log('query', query);
+  Beacon.findOne(query).then((beacon) => {
     const {uuid} = beacon;
     User.findOne({_id: id}).then(
       (user) => {
+        if(!user) throw err;
         user.favorieTopics.push(uuid);
         user.save().then(
           () => console.log('succeeeeeed!!')
@@ -24,9 +30,9 @@ client.on('message', function (topic, message) {
       }
     )
   });
-
+  console.log('query', query);
   console.log("id", id);
-  console.log('topic', t)
+  console.log('topic', m)
 });
 
 
